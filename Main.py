@@ -28,6 +28,7 @@ def home():
             model='gemini-2.5-flash',
 
 
+
             input='Hola',
             tools=tools,
             generation_config=generation_config,
