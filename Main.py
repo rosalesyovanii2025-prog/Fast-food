@@ -25,7 +25,8 @@ generation_config = {
 def home():
     try:
         interaction = client.interactions.create(
-            model='models/gemini-3-flash-preview',
+            model='gemini-1.5-flash',
+
             input='Hola',
             tools=tools,
             generation_config=generation_config,
