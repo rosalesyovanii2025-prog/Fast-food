@@ -1,8 +1,11 @@
 import os
 from google import genai
+from flask import Flask, jsonify
+
+app = Flask(__name__)
 
 client = genai.Client(
-    api_key=os.environ.get("GEMINI_API_KEY"),
+    api_key=os.environ.get("GEMINI_API_KEY")
 )
 
 tools = [
@@ -18,13 +21,18 @@ generation_config = {
     'thinking_level': 'high',
 }
 
-interaction = client.interactions.create(
-    model='models/gemini-3-flash-preview',
-    input='',
-    tools=tools,
-    generation_config=generation_config,
-)
+@app.route('/')
+def home():
+    try:
+        interaction = client.interactions.create(
+            model='models/gemini-3-flash-preview',
+            input='Hola',
+            tools=tools,
+            generation_config=generation_config,
+        )
+        return jsonify({"respuesta": str(interaction.steps[-1])})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-print(interaction.steps[-1])
-
-
+if __name__ == '__main__':
+    app.run()
